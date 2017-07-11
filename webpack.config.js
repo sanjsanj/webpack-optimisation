@@ -7,9 +7,16 @@ const config = {
   //     path: __dirname + 'dist',
   //     filename: 'bundle.js',
   // },
-  entry: ['./assets/scripts/scripts.js', './assets/scss/styles.scss'],
+  // entry: ['./assets/scripts/scripts.js', './assets/scss/styles.scss'],
+  devtool: "source-map",
+  entry: {
+    primary: "./assets/scss/primary.scss",
+    secondary: "./assets/scss/secondary.scss",
+    core: "./assets/scss/core.scss",
+  },
   output: {
-    filename: 'dist/bundle.js'
+    filename: 'dist/bundle.js',
+    chunkFilename: '[id].[chunkhash].js',
   },
   module: {
     rules: [
