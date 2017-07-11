@@ -1,3 +1,3 @@
 import './style.css';
 
-console.log('hi');
+console.log('hi from index');

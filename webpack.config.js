@@ -1,49 +1,38 @@
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const extractCoreCss = new ExtractTextPlugin("dist/[name]-CORE.css");
+const extractOtherCss = new ExtractTextPlugin("dist/[name].css");
 
 const config = {
-  // entry: "./src/index.js",
-  // entry: "./assets/scripts/scripts.js",
-  // output: {
-  //     path: __dirname + 'dist',
-  //     filename: 'bundle.js',
-  // },
-  // entry: ['./assets/scripts/scripts.js', './assets/scss/styles.scss'],
-  devtool: "source-map",
+  // devtool: "source-map",
   entry: {
-    primary: "./assets/scss/primary.scss",
-    secondary: "./assets/scss/secondary.scss",
+    someBlock: "./assets/scss/primary.scss",
+    articlePage: "./assets/scss/secondary.scss",
     core: "./assets/scss/core.scss",
   },
   output: {
     filename: 'dist/bundle.js',
-    chunkFilename: '[id].[chunkhash].js',
+    chunkFilename: "[id]"
   },
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: [
-          "style-loader",
-          "css-loader",
-        ]
+        test: /core\.scss$/,
+        // loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader']),
+        loader: extractCoreCss.extract(['css-loader', 'sass-loader']),
       },
       {
         test: /\.scss$/,
-        // use: [
-        //   "style-loader",
-        //   "css-loader",
-        //   "sass-loader",
-        // ]
-        loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
+        exclude: /core\.scss$/,
+        loader: extractOtherCss.extract(['css-loader', 'sass-loader']),
       },
     ]
   },
   plugins: [
-    new ExtractTextPlugin({ // define where to save the file
-      filename: 'dist/[name].bundle.css',
-      allChunks: true,
-    }),
-  ],
+    // new ExtractTextPlugin("dist/[name].css"),
+    extractCoreCss,
+    extractOtherCss,
+  ]
 }
 
 module.exports = config;
